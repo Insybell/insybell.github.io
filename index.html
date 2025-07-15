@@ -431,6 +431,45 @@
         a:hover {
             color: #C0C0C0;
         }
+        /* For better favicon display*/
+        link[rel="icon"] {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Make navigation logo more prominent*/
+        .logo img {
+            height: 2.8rem !important;
+            width: auto;
+            margin-right: 0.8rem;
+            vertical-align: middle;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Make hero logo more prominent*/
+        .hero-title img {
+            height: 4rem !important;
+            width: auto;
+            margin-right: 1.5rem;
+            vertical-align: middle;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo img {
+                height: 2.2rem !important;
+                margin-right: 0.5rem;
+            }
+
+            .hero-title img {
+                height: 3rem !important;
+                margin-right: 1rem;
+            }
+        }       
     </style>
 </head>
 <body>
