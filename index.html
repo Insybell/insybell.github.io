@@ -1,1 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔔 Insybell - Systems That Know When to Act</title>
+    <meta name="description" content="Smart AI orchestration for timing, logic, and control. Decision-centered AI orchestration framework designed to power intelligent systems.">
+    <link rel="icon" href="🔔" type="image/svg+xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F5F5DC;
+            color: #333333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Navigation */
+        .header {
+            background: #F5F5DC;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #D4AF37;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #D4AF37;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: nowrap;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 0.8rem;
+            background: #F5F5DC;
+            color: #333333;
+            text-decoration: none;
+            border-radius: 18px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 2px solid #D4AF37;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #C0C0C0;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-btn:hover::before {
+            left: 0;
+        }
+
+        .nav-btn:hover {
+            color: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #D4AF37, #C0C0C0, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #333333;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #D4AF37;
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            background: #C0C0C0;
+        }
+
+        /* Content Sections */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: #E0F7FA;
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #D4AF37;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+            background: #E0F7FA;
+        }
+
+        .card h3 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        /* Core Focus Section */
+        .core-focus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .focus-item {
+            background: #E0F7FA;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #D4AF37;
+            transition: all 0.3s ease;
+        }
+
+        .focus-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .focus-item h4 {
+            color: #D4AF37;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Use Cases Section */
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .use-case {
+            background: #E0F7FA;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .use-case:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .use-case h4 {
+            color: #D4AF37;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        /* Features Table */
+        .features-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: #E0F7FA;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .features-table th,
+        .features-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .features-table th {
+            background: #D4AF37;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .features-table td {
+            color: #333333;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 3rem 2rem;
+            background: #E0F7FA;
+            border-radius: 20px;
+            border: 2px solid #D4AF37;
+        }
+
+        .contact-section h2 {
+            color: #D4AF37;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn.primary {
+            background: #D4AF37;
+            color: #FFFFFF;
+        }
+
+        .contact-btn.secondary {
+            background: #F5F5DC;
+            color: #D4AF37;
+            border: 2px solid #D4AF37;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+            background: #C0C0C0;
+            color: #333333;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #D4AF37;
+            color: #333333;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.4rem 0.7rem;
+                font-size: 0.8rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .core-focus-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Animated Background Elements */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Links styling */
+        a {
+            color: #D4AF37;
+        }
+
+        a:hover {
+            color: #C0C0C0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">🔔 Insybell</a>
+            <nav class="nav-buttons">
+                <a href="#home" class="nav-btn">Home</a>
+                <a href="#what-is-insybell" class="nav-btn">What is Insybell</a>
+                <a href="#core-focus" class="nav-btn">Core Focus</a>
+                <a href="#why-insybell" class="nav-btn">Why Insybell</a>
+                <a href="#use-cases" class="nav-btn">Use Cases</a>
+                <a href="#blog" class="nav-btn">Blog</a>
+                <a href="https://github.com/NatalieCheong" class="nav-btn" target="_blank">GitHub</a>
+                <a href="#contact" class="nav-btn">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <h1 class="hero-title">🔔 Insybell</h1>
+            <p class="hero-subtitle">Systems That Know When to Act</p>
+            <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">Smart AI orchestration for timing, logic, and control.</p>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </section>
+
+        <!-- What is Insybell Section -->
+        <section class="card" id="what-is-insybell">
+            <h3>🚀 What Is Insybell?</h3>
+            <p>Insybell is a <strong>decision-centered AI orchestration framework</strong> — designed to power intelligent systems that understand context, decide when to act, and coordinate tasks across agents or tools.</p>
+            <p style="margin-top: 1rem;"><em>Just like a bell that only rings when needed — Insybell ensures your AI only acts when it should.</em></p>
+        </section>
+
+        <!-- Core Focus Section -->
+        <section class="card" id="core-focus">
+            <h3>🔧 Core Focus</h3>
+            <div class="core-focus-grid">
+                <div class="focus-item">
+                    <h4>🔔 Decision Triggering Systems</h4>
+                    <p>Activate logic, agents, or tools based on clear conditions and timing.</p>
+                </div>
+                <div class="focus-item">
+                    <h4>🧠 Multi-Agent Intelligence (Optional)</h4>
+                    <p>Support distributed logic coordination when tasks require it.</p>
+                </div>
+                <div class="focus-item">
+                    <h4>📡 Integrates with LangChain, LLMs, or MCP</h4>
+                    <p>Built to plug into modern AI pipelines and tools.</p>
+                </div>
+                <div class="focus-item">
+                    <h4>🛠 Modular & Extensible Architecture</h4>
+                    <p>Start small, scale when needed. Use single-agent or multi-module logic.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Insybell Section -->
+        <section class="card" id="why-insybell">
+            <h3>💡 Why Insybell?</h3>
+            <table class="features-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>🧠 Smarter Timing</strong></td>
+                        <td>Trigger agents/tools only when relevant — avoid noise and waste</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🔍 Explainable Execution</strong></td>
+                        <td>All decisions and flows are transparent and logged</td>
+                    </tr>
+                    <tr>
+                        <td><strong>⚙️ System-First Thinking</strong></td>
+                        <td>Matches your logic, data, and system needs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🌱 Lightweight but Scalable</strong></td>
+                        <td>From one rule to many agents, grows with you</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="card" id="use-cases">
+            <h3>🧪 Use Cases</h3>
+            <p>Insybell helps you build intelligent, timing-aware systems like:</p>
+            <div class="use-cases-grid">
+                <div class="use-case">
+                    <h4>📂 File/Task Router</h4>
+                    <p>Trigger different actions based on file type, metadata, or content.</p>
+                </div>
+                <div class="use-case">
+                    <h4>💬 Chat Routing Logic</h4>
+                    <p>Dynamically switch AI responses based on intent or flow.</p>
+                </div>
+                <div class="use-case">
+                    <h4>📊 Data Monitor</h4>
+                    <p>Activate alerts or responses only when certain thresholds are crossed.</p>
+                </div>
+                <div class="use-case">
+                    <h4>🔗 Toolchain Controller</h4>
+                    <p>Chain multiple models/APIs conditionally, with full control.</p>
+                </div>
+                <div class="use-case">
+                    <h4>⚖️ Explainable Rule Engine</h4>
+                    <p>Rule-based or hybrid logic that can be shown and justified to users.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Who It's For Section -->
+        <div class="content-grid">
+            <div class="card">
+                <h3>👤 Who It's For</h3>
+                <ul style="margin-top: 1rem; color: #333333;">
+                    <li>🧪 <strong>AI builders</strong> needing control over logic and agent orchestration</li>
+                    <li>📈 <strong>Startups</strong> seeking smart backend workflows</li>
+                    <li>🧩 <strong>Agencies</strong> automating review, content routing, or decisions</li>
+                    <li>🔧 <strong>Solo developers</strong> prototyping intelligent flows with clarity</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>👩‍💻 About the Creator</h3>
+                <h4 style="color: #D4AF37; margin-bottom: 1rem;">Natalie Cheong</h4>
+                <blockquote style="font-style: italic; color: #666; margin: 1rem 0; padding-left: 1rem; border-left: 3px solid #D4AF37;">
+                    "I believe AI isn't just about what it can do, but when it should do it."
+                </blockquote>
+                <div style="margin-top: 1.5rem;">
+                    <p style="color: #D4AF37; margin-bottom: 0.5rem;">📬 Contact: natalie@insybell.com</p>
+                    <p style="color: #D4AF37;">🌐 GitHub: <a href="https://github.com/NatalieCheong" target="_blank" style="color: #D4AF37;">github.com/NatalieCheong</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Section -->
+        <section class="card" id="blog">
+            <h3>📝 Latest from Insybell Blog</h3>
+            <p>Deep dives into AI orchestration, decision systems, and intelligent automation.</p>
+            
+            <div style="margin-top: 2rem; padding: 1.5rem; background: #F5F5DC; border-radius: 10px; border: 1px solid #D4AF37;">
+                <h4 style="color: #D4AF37; margin-bottom: 0.5rem;">Coming Soon: Insybell Development Insights</h4>
+                <p style="color: #333333; margin-bottom: 1rem;">
+                    We're preparing comprehensive articles about building intelligent decision systems, timing-aware AI, and practical orchestration patterns.
+                </p>
+                <a href="blog/index.html" style="color: #D4AF37; text-decoration: none; font-weight: bold;">📚 Visit Blog →</a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <h2>📞 Get Started</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 1rem;">Ready to build intelligent systems that know when to act?</p>
+            
+            <div class="contact-buttons">
+                <a href="mailto:natalie@insybell.com" class="contact-btn primary">📬 Email natalie@insybell.com</a>
+                <a href="https://github.com/NatalieCheong" target="_blank" class="contact-btn secondary">🔔 Schedule a Consultation</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>📝 Legal & Footer</strong></p>
+        <p>&copy; 2025 Insybell · Designed & operated by Natalie Cheong</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+            Insybell is currently an independent personal initiative, offering freelance-level consulting and AI prototyping services. Formal incorporation is planned for future phases.
+        </p>
+    </footer>
+</body>
+</html>
