@@ -1,1 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Insybell - AI Orchestration Projects</title>
+    <meta name="description" content="Explore Insybell projects showcasing decision-centered AI orchestration, multi-agent systems, and intelligent automation frameworks.">
+    <link rel="icon" href="../assets/insybell_logo.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #F5F5DC;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            color: #333333;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #D4AF37, #C0C0C0, #D4AF37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .nav-links {
+            margin: 20px 0;
+        }
+
+        .nav-links a {
+            color: #D4AF37;
+            text-decoration: none;
+            margin: 0 15px;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+            color: #C0C0C0;
+        }
+
+        .content {
+            background: #E0F7FA;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .projects-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D4AF37;
+        }
+
+        .projects-header h2 {
+            font-size: 2.5rem;
+            color: #D4AF37;
+            margin-bottom: 10px;
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        .project-card {
+            background: #F5F5DC;
+            border-radius: 15px;
+            padding: 30px;
+            border-left: 5px solid #D4AF37;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .project-card h3 {
+            color: #D4AF37;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .project-tag {
+            background: #D4AF37;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .project-description {
+            color: #333333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .project-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .project-btn.primary {
+            background: #D4AF37;
+            color: white;
+        }
+
+        .project-btn.secondary {
+            background: #F5F5DC;
+            color: #D4AF37;
+            border: 2px solid #D4AF37;
+        }
+
+        .project-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+            background: #C0C0C0;
+            color: #333333;
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-to-home a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #D4AF37;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-home a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            background: #C0C0C0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>
+                <img src="../assets/insybell_logo.png" alt="Insybell Logo" style="height: 2.5rem; margin-right: 0.8rem; vertical-align: middle;">
+                Insybell Projects
+            </h1>
+            <p>Showcasing decision-centered AI orchestration in action</p>
+            <div class="nav-links">
+                <a href="../index.html">← Back to Home</a>
+                <a href="../blog/index.html">Blog</a>
+                <a href="#featured">Featured Projects</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <div class="projects-header">
+                <h2>Featured Projects</h2>
+                <p>Real-world implementations of Insybell's AI orchestration framework</p>
+            </div>
+
+            <div class="projects-grid" id="featured">
+                <div class="project-card">
+                    <h3>💰 Financial Multi-Agent System</h3>
+                    <div class="project-tags">
+                        <span class="project-tag">Multi-Agent AI</span>
+                        <span class="project-tag">Financial Analysis</span>
+                        <span class="project-tag">Decision Systems</span>
+                        <span class="project-tag">Insybell Framework</span>
+                        <span class="project-tag">Python</span>
+                    </div>
+                    <p class="project-description">
+                        A comprehensive demonstration of Insybell's decision-centered AI orchestration in the financial domain. This system showcases intelligent timing, multi-agent coordination, and explainable decision-making for financial analysis and automation. Features include real-time market analysis, risk assessment, and automated trading signals.
+                    </p>
+                    <div class="project-links">
+                        <a href="https://github.com/Insybell/Financial_Multi_Agent_System" target="_blank" class="project-btn primary">
+                            🔗 View on GitHub
+                        </a>
+                        <a href="https://github.com/Insybell/Financial_Multi_Agent_System#readme" target="_blank" class="project-btn secondary">
+                            📖 Read Documentation
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card" style="opacity: 0.6; border-left-color: #C0C0C0;">
+                    <h3>🚀 More Projects Coming Soon</h3>
+                    <div class="project-tags">
+                        <span style="background: #C0C0C0;" class="project-tag">Healthcare AI</span>
+                        <span style="background: #C0C0C0;" class="project-tag">E-commerce</span>
+                        <span style="background: #C0C0C0;" class="project-tag">Manufacturing</span>
+                    </div>
+                    <p class="project-description">
+                        We're developing additional Insybell implementations across various industries including healthcare diagnostics, e-commerce recommendation systems, and manufacturing optimization. Each project will demonstrate different aspects of decision-centered AI orchestration.
+                    </p>
+                    <div class="project-links">
+                        <span style="color: #C0C0C0; font-weight: bold;">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-to-home">
+                <a href="../index.html">🏠 Back to Insybell Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
