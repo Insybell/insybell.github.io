@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Management in AI Agents</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #333333;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #001F54, #002B5B);
+            color: #FFFFFF;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 31, 84, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: #333333;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid #002B5B;
+            padding-left: 20px;
+            background: linear-gradient(90deg, rgba(0, 31, 84, 0.1), transparent);
+            padding: 15px 20px;
+        }
+        
+        h3 {
+            color: #333333;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.1), rgba(0, 43, 91, 0.05));
+            border: 2px solid #001F54;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 2px 10px rgba(0, 31, 84, 0.2);
+        }
+        
+        .code-block {
+            background-color: #001F54;
+            color: #FFFFFF;
+            border: 1px solid #002B5B;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        
+        .diagram-container {
+            background: #FFFFFF;
+            border: 2px solid #002B5B;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 31, 84, 0.1);
+        }
+        
+        .diagram-caption {
+            margin-top: 15px;
+            font-style: italic;
+            color: #002B5B;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+        
+        .use-case-box {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.05), rgba(0, 43, 91, 0.1));
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 2px solid #001F54;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 31, 84, 0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #001F54, #002B5B);
+            color: #FFFFFF;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 31, 84, 0.1);
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(0, 31, 84, 0.05);
+        }
+        
+        .implementation-section {
+            background: rgba(0, 31, 84, 0.03);
+            padding: 25px;
+            border-left: 4px solid #001F54;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        
+        .key-insight {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.15), rgba(0, 43, 91, 0.08));
+            border-left: 5px solid #001F54;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+        
+        .pattern-card {
+            background: #FFFFFF;
+            border: 2px solid #002B5B;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 31, 84, 0.15);
+        }
+        
+        .pattern-card h4 {
+            color: #001F54;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .conclusion {
+            background: #FFFFFF;
+            color: #333333;
+            padding: 30px;
+            border: 2px solid #001F54;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 31, 84, 0.3);
+        }
+
+        .author-info {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.05), rgba(0, 43, 91, 0.1));
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #002B5B;
+        }
+
+        a {
+            color: #002B5B;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Memory Management in AI Agents</h1>
+        <div class="subtitle">Building Persistent Context and Knowledge Systems</div>
+    </div>
+
+    <div class="use-case-box">
+        <h2>The Financial Advisory Memory Challenge</h2>
+        <p>Consider a financial advisory agent serving a client over several years, managing retirement planning, tax optimization, and investment strategy. During the first consultation, the client mentions their daughter will attend college in eight years, they prefer environmentally sustainable investments, and they have an unusually high risk tolerance due to substantial inherited wealth. Six months later, the client asks for portfolio recommendations. The agent must remember not just recent market discussions but also the client's long-term goals, ethical preferences, risk profile, and personal circumstances mentioned months ago. A year later, when the client inquires about college funding strategies, the agent needs to recall the daughter's timeline and connect it to current portfolio positioning and tax considerations.</p>
+        
+        <p>This scenario illustrates the fundamental memory management challenges facing intelligent agents. The agent must maintain conversational context across sessions spanning months or years, recall specific episodic details about the client's circumstances and preferences, apply general semantic knowledge about financial planning and tax law, prioritize which information to keep readily accessible versus archive, retrieve relevant memories when they become pertinent to new queries, and gracefully manage the reality that perfect memory of every interaction is neither possible nor desirable. How agents structure, store, retrieve, and maintain memory fundamentally determines whether they function as stateless query responders or as genuinely context-aware advisory partners.</p>
+    </div>
+
+    <h2>Short-Term versus Long-Term Memory</h2>
+
+    <h3>The Memory Hierarchy</h3>
+
+    <p>Human memory operates through a hierarchical structure, and effective agent memory systems mirror this architecture. Short-term or working memory maintains information immediately relevant to current tasks, holding active context that shapes ongoing reasoning and responses. Long-term memory stores information for extended periods, preserving knowledge and experiences that might become relevant in future interactions. The boundary between these memory tiers is not rigid but rather represents a spectrum of temporal persistence and accessibility tradeoffs.</p>
+
+    <p>In the financial advisory agent, short-term memory holds the current conversation flow. When the client asks about portfolio rebalancing, short-term memory contains the immediately preceding exchanges, any documents or data currently under discussion, the specific rebalancing question and its parameters, and intermediate calculations or reasoning steps being performed. This memory enables the agent to maintain conversational coherence, resolve pronouns and references correctly, avoid redundant information gathering, and build responses that flow naturally from the ongoing dialogue.</p>
+
+    <p>Long-term memory stores persistent information that transcends individual conversations. This includes the client's profile with goals, risk tolerance, and constraints, historical interactions and decisions that inform current advice, domain knowledge about financial planning strategies and regulations, and learned patterns about this client's preferences and communication style. Long-term memory enables the agent to personalize advice based on accumulated understanding, avoid re-asking questions answered previously, connect current queries to historical context, and demonstrate genuine continuity in the advisory relationship.</p>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        graph TB
+            A[User Query] --> B[Working Memory]
+            
+            B --> C[Current Conversation]
+            B --> D[Active Context]
+            B --> E[Reasoning State]
+            
+            C --> F{Memory Manager}
+            D --> F
+            E --> F
+            
+            F --> G[Short-Term Memory]
+            F --> H[Medium-Term Memory]
+            F --> I[Long-Term Memory]
+            
+            G --> G1[Last 5 Exchanges]
+            G --> G2[Session Context]
+            G --> G3[TTL: Minutes]
+            
+            H --> H1[Recent Sessions]
+            H --> H2[Cached Computations]
+            H --> H3[TTL: Days/Weeks]
+            
+            I --> I1[Client Profile]
+            I --> I2[Historical Interactions]
+            I --> I3[Domain Knowledge]
+            I --> I4[TTL: Indefinite]
+            
+            G --> J[Response Generation]
+            H --> J
+            I --> J
+            
+            style F fill:#001F54,color:#FFFFFF
+            style J fill:#e6ffe6
+        </div>
+        <div class="diagram-caption">Figure 1: Hierarchical Memory Architecture for Financial Advisory Agent</div>
+    </div>
+
+    <h3>Implementation Strategies for Memory Tiers</h3>
+
+    <p>Implementing tiered memory requires careful design of storage mechanisms, persistence strategies, and access patterns for each tier. Short-term memory typically resides in fast, volatile storage optimized for low-latency access. The agent maintains conversational context in memory structures that support rapid updates as the dialogue progresses. When the client asks a follow-up question, the agent immediately accesses short-term memory to understand what "that strategy" or "those stocks" refers to without expensive database queries.</p>
+
+    <p>The technical implementation might use in-memory data structures for immediate conversational context, with session state persisting to Redis or similar caching systems for resilience against agent restarts. Short-term memory has aggressive expiration policies, typically clearing after periods of inactivity or when sessions explicitly end. This aggressive cleanup prevents unbounded memory growth and reflects the reality that not all conversational context remains relevant indefinitely.</p>
+
+    <div class="pattern-card">
+        <h4>Tiered Memory System Implementation</h4>
+        <div class="code-block">
+<span style="color: #FF6B6B;">class</span> <span style="color: #FFD93D;">TieredMemorySystem</span> {
+    <span style="color: #FFD93D;">constructor</span>() {
+        <span style="color: #4CAF50;">// Short-term: In-memory for current session</span>
+        <span style="color: #FF6B6B;">this</span>.workingMemory = {
+            conversationHistory: [],
+            activeContext: {},
+            sessionStart: Date.<span style="color: #FFD93D;">now</span>()
+        };
+        
+        <span style="color: #4CAF50;">// Medium-term: Redis cache with TTL</span>
+        <span style="color: #FF6B6B;">this</span>.mediumTermCache = <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">RedisCache</span>({
+            ttl: <span style="color: #FFD93D;">604800</span>, <span style="color: #4CAF50;">// 7 days</span>
+            maxSize: <span style="color: #FFD93D;">1000</span>
+        });
+        
+        <span style="color: #4CAF50;">// Long-term: Persistent database</span>
+        <span style="color: #FF6B6B;">this</span>.longTermStore = <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">DatabaseStore</span>({
+            type: <span style="color: #A8E6CF;">'postgresql'</span>
+        });
+        
+        <span style="color: #4CAF50;">// Vector store for semantic search</span>
+        <span style="color: #FF6B6B;">this</span>.vectorStore = <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">VectorDatabase</span>({
+            dimensions: <span style="color: #FFD93D;">1536</span>,
+            indexType: <span style="color: #A8E6CF;">'hnsw'</span>
+        });
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">addToMemory</span>(content, metadata) {
+        <span style="color: #4CAF50;">// Always add to working memory</span>
+        <span style="color: #FF6B6B;">this</span>.workingMemory.conversationHistory.<span style="color: #FFD93D;">push</span>({
+            content: content,
+            metadata: metadata,
+            timestamp: Date.<span style="color: #FFD93D;">now</span>()
+        });
+        
+        <span style="color: #4CAF50;">// Determine importance for tier placement</span>
+        <span style="color: #FF6B6B;">const</span> importance = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">assessImportance</span>(content, metadata);
+        
+        <span style="color: #FF6B6B;">if</span> (importance > <span style="color: #FFD93D;">0.8</span>) {
+            <span style="color: #4CAF50;">// High importance: Store in long-term memory</span>
+            <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.longTermStore.<span style="color: #FFD93D;">save</span>({
+                userId: metadata.userId,
+                content: content,
+                importance: importance,
+                timestamp: Date.<span style="color: #FFD93D;">now</span>(),
+                category: metadata.category
+            });
+            
+            <span style="color: #4CAF50;">// Also create vector embedding for semantic search</span>
+            <span style="color: #FF6B6B;">const</span> embedding = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">generateEmbedding</span>(content);
+            <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.vectorStore.<span style="color: #FFD93D;">insert</span>({
+                id: <span style="color: #FFD93D;">generateId</span>(),
+                vector: embedding,
+                metadata: metadata
+            });
+            
+        } <span style="color: #FF6B6B;">else if</span> (importance > <span style="color: #FFD93D;">0.4</span>) {
+            <span style="color: #4CAF50;">// Medium importance: Cache temporarily</span>
+            <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.mediumTermCache.<span style="color: #FFD93D;">set</span>(
+                <span style="color: #A8E6CF;">`session:${metadata.sessionId}:${Date.now()}`</span>,
+                { content, metadata },
+                { ttl: <span style="color: #FFD93D;">604800</span> }
+            );
+        }
+        
+        <span style="color: #4CAF50;">// Manage working memory size</span>
+        <span style="color: #FF6B6B;">if</span> (<span style="color: #FF6B6B;">this</span>.workingMemory.conversationHistory.length > <span style="color: #FFD93D;">50</span>) {
+            <span style="color: #FF6B6B;">this</span>.workingMemory.conversationHistory.<span style="color: #FFD93D;">shift</span>();
+        }
+    }
+    
+    <span style="color: #FFD93D;">assessImportance</span>(content, metadata) {
+        <span style="color: #FF6B6B;">let</span> score = <span style="color: #FFD93D;">0.3</span>; <span style="color: #4CAF50;">// Base score</span>
+        
+        <span style="color: #4CAF50;">// Boost for key information types</span>
+        <span style="color: #FF6B6B;">if</span> (metadata.category === <span style="color: #A8E6CF;">'client_goal'</span>) score += <span style="color: #FFD93D;">0.4</span>;
+        <span style="color: #FF6B6B;">if</span> (metadata.category === <span style="color: #A8E6CF;">'risk_tolerance'</span>) score += <span style="color: #FFD93D;">0.4</span>;
+        <span style="color: #FF6B6B;">if</span> (metadata.category === <span style="color: #A8E6CF;">'personal_detail'</span>) score += <span style="color: #FFD93D;">0.3</span>;
+        
+        <span style="color: #4CAF50;">// Boost for explicit user statements</span>
+        <span style="color: #FF6B6B;">if</span> (metadata.isUserProvided) score += <span style="color: #FFD93D;">0.2</span>;
+        
+        <span style="color: #FF6B6B;">return</span> Math.<span style="color: #FFD93D;">min</span>(score, <span style="color: #FFD93D;">1.0</span>);
+    }
+}
+        </div>
+    </div>
+
+    <p>Long-term memory requires durable persistence with more sophisticated organization and retrieval mechanisms. Client profiles, historical interactions, and domain knowledge store in relational databases, document stores, or specialized knowledge bases depending on the data structure and access patterns. Unlike short-term memory's simple append-and-expire model, long-term memory needs indexing strategies that support complex queries, embedding generation for semantic search capabilities, regular consolidation to avoid redundancy, and archival policies that balance completeness with storage costs.</p>
+
+    <h2>Storage Mechanisms for Different Memory Types</h2>
+
+    <h3>Episodic Memory Storage</h3>
+
+    <p>Episodic memory stores specific events and experiences, preserving not just facts but contextual details about when and how information was learned. When the financial advisory agent remembers that the client mentioned their daughter's college timeline during an initial consultation six months ago, this constitutes episodic memory. The agent recalls not just the fact that college funding matters to this client, but the specific conversation where this was discussed, the client's emotional tone when discussing their daughter's future, and other details from that interaction.</p>
+
+    <p>Episodic memory typically stores as structured events with temporal annotations, contextual metadata, and links to related episodes. Each episode captures what happened during a particular interaction, when it occurred and how long it lasted, who participated and what their roles were, what topics were discussed and decisions made, and how this episode relates to previous and subsequent interactions. This rich structure enables the agent to recall specific interactions, trace how client circumstances evolved over time, and understand the provenance of information.</p>
+
+    <div class="pattern-card">
+        <h4>Episodic Memory Implementation</h4>
+        <div class="code-block">
+<span style="color: #FF6B6B;">class</span> <span style="color: #FFD93D;">EpisodicMemorySystem</span> {
+    <span style="color: #FFD93D;">constructor</span>(database, vectorStore) {
+        <span style="color: #FF6B6B;">this</span>.db = database;
+        <span style="color: #FF6B6B;">this</span>.vectorStore = vectorStore;
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">storeEpisode</span>(episode) {
+        <span style="color: #4CAF50;">// Structure the episode with rich context</span>
+        <span style="color: #FF6B6B;">const</span> structuredEpisode = {
+            id: <span style="color: #FFD93D;">generateEpisodeId</span>(),
+            userId: episode.userId,
+            timestamp: episode.timestamp,
+            duration: episode.duration,
+            
+            <span style="color: #4CAF50;">// Content and context</span>
+            summary: episode.summary,
+            keyPoints: episode.keyPoints,
+            sentiment: episode.sentiment,
+            topics: episode.topics,
+            
+            <span style="color: #4CAF50;">// Decisions and outcomes</span>
+            decisionsMade: episode.decisions || [],
+            actionItems: episode.actionItems || [],
+            
+            <span style="color: #4CAF50;">// Relationships</span>
+            relatedEpisodes: episode.relatedEpisodes || [],
+            references: episode.references || []
+        };
+        
+        <span style="color: #4CAF50;">// Store in relational database</span>
+        <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.db.<span style="color: #FFD93D;">insert</span>(<span style="color: #A8E6CF;">'episodes'</span>, structuredEpisode);
+        
+        <span style="color: #4CAF50;">// Create vector embedding for semantic retrieval</span>
+        <span style="color: #FF6B6B;">const</span> embeddingText = <span style="color: #A8E6CF;">`${structuredEpisode.summary} 
+                              ${structuredEpisode.keyPoints.join(' ')}`</span>;
+        <span style="color: #FF6B6B;">const</span> embedding = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">generateEmbedding</span>(embeddingText);
+        
+        <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.vectorStore.<span style="color: #FFD93D;">insert</span>({
+            id: structuredEpisode.id,
+            vector: embedding,
+            metadata: {
+                userId: structuredEpisode.userId,
+                timestamp: structuredEpisode.timestamp,
+                topics: structuredEpisode.topics
+            }
+        });
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">retrieveRelevantEpisodes</span>(query, userId, options = {}) {
+        <span style="color: #4CAF50;">// Semantic search using vector embeddings</span>
+        <span style="color: #FF6B6B;">const</span> queryEmbedding = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">generateEmbedding</span>(query);
+        
+        <span style="color: #FF6B6B;">const</span> semanticMatches = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.vectorStore.<span style="color: #FFD93D;">search</span>(
+            queryEmbedding,
+            {
+                filter: { userId: userId },
+                topK: options.limit || <span style="color: #FFD93D;">5</span>,
+                threshold: <span style="color: #FFD93D;">0.65</span>
+            }
+        );
+        
+        <span style="color: #4CAF50;">// Retrieve full episode details</span>
+        <span style="color: #FF6B6B;">const</span> episodes = <span style="color: #FF6B6B;">await</span> Promise.<span style="color: #FFD93D;">all</span>(
+            semanticMatches.<span style="color: #FFD93D;">map</span>(<span style="color: #FF6B6B;">match</span> =>
+                <span style="color: #FF6B6B;">this</span>.db.<span style="color: #FFD93D;">findById</span>(<span style="color: #A8E6CF;">'episodes'</span>, match.id)
+            )
+        );
+        
+        <span style="color: #4CAF50;">// Apply temporal weighting</span>
+        <span style="color: #FF6B6B;">const</span> now = Date.<span style="color: #FFD93D;">now</span>();
+        <span style="color: #FF6B6B;">const</span> weightedEpisodes = episodes.<span style="color: #FFD93D;">map</span>(<span style="color: #FF6B6B;">episode</span> => {
+            <span style="color: #FF6B6B;">const</span> ageInDays = (now - episode.timestamp) / 
+                (<span style="color: #FFD93D;">1000</span> * <span style="color: #FFD93D;">60</span> * <span style="color: #FFD93D;">60</span> * <span style="color: #FFD93D;">24</span>);
+            <span style="color: #FF6B6B;">const</span> temporalWeight = Math.<span style="color: #FFD93D;">exp</span>(-ageInDays / <span style="color: #FFD93D;">180</span>);
+            
+            <span style="color: #FF6B6B;">return</span> {
+                ...episode,
+                relevanceScore: episode.semanticScore * temporalWeight
+            };
+        });
+        
+        <span style="color: #FF6B6B;">return</span> weightedEpisodes
+            .<span style="color: #FFD93D;">sort</span>((<span style="color: #FF6B6B;">a</span>, <span style="color: #FF6B6B;">b</span>) => b.relevanceScore - a.relevanceScore)
+            .<span style="color: #FFD93D;">slice</span>(<span style="color: #FFD93D;">0</span>, options.limit || <span style="color: #FFD93D;">5</span>);
+    }
+}
+        </div>
+    </div>
+
+    <p>Vector databases prove particularly valuable for episodic memory retrieval. When the client asks about college funding, the agent generates an embedding of this query and searches for semantically similar episodes. This might surface the initial consultation where college timelines were discussed, even if the exact words differ. The vector similarity captures conceptual relatedness that keyword search would miss, enabling the agent to connect "college funding" queries to past discussions about "daughter's education" or "university savings plans."</p>
+
+    <h3>Semantic Knowledge Storage</h3>
+
+    <p>Semantic memory stores general knowledge and concepts independent of specific experiences. For the financial advisory agent, semantic memory includes knowledge about investment vehicles and their characteristics, tax rules and regulations, financial planning strategies and best practices, market dynamics and economic principles, and domain-specific terminology and relationships. Unlike episodic memory tied to particular interactions, semantic knowledge applies broadly across situations.</p>
+
+    <p>Knowledge graphs provide powerful structures for semantic memory, representing concepts as nodes and relationships as edges. The agent's knowledge graph might connect "municipal bonds" to "tax-exempt income," "state-specific benefits," and "credit risk considerations." When reasoning about investment recommendations, the agent traverses these relationships to understand implications and connections. If the client asks about tax-efficient income strategies, the graph helps the agent navigate from this high-level goal through various paths to specific investment vehicles that satisfy the requirements.</p>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        graph TB
+            A[Investment Strategy] --> B[Tax Optimization]
+            A --> C[Risk Management]
+            A --> D[Income Generation]
+            
+            B --> E[Municipal Bonds]
+            B --> F[Roth IRA]
+            B --> G[Tax-Loss Harvesting]
+            
+            E --> H[State Bonds]
+            E --> I[General Obligation]
+            E --> J[Revenue Bonds]
+            
+            D --> E
+            D --> K[Dividend Stocks]
+            D --> L[REITs]
+            
+            C --> M[Diversification]
+            C --> N[Asset Allocation]
+            
+            M --> E
+            M --> K
+            
+            style A fill:#001F54,color:#FFFFFF
+            style B fill:#e6f3ff
+            style C fill:#e6f3ff
+            style D fill:#e6f3ff
+        </div>
+        <div class="diagram-caption">Figure 2: Knowledge Graph Structure for Financial Domain Semantic Memory</div>
+    </div>
+
+    <p>Hybrid approaches combining knowledge graphs with vector embeddings enable both structured reasoning and semantic search. The agent maintains explicit relationship graphs for well-defined concepts while using embeddings to capture nuanced similarities and enable flexible retrieval. When the client asks about "ethical investing," the agent might use semantic search to find concepts related to "socially responsible" or "ESG" even if these exact terms aren't present in the knowledge graph, then traverse graph relationships to understand how these concepts connect to specific investment options.</p>
+
+    <div class="key-insight">
+        Different memory types require different storage mechanisms optimized for their access patterns. Conversational context needs fast sequential access, episodic memory benefits from temporal and semantic indexing, and semantic knowledge requires graph structures supporting relationship traversal. Effective memory systems use the right storage mechanism for each memory type rather than forcing all memory into a single structure.
+    </div>
+
+    <h2>Context Window Management</h2>
+
+    <p>Language model-based agents face fundamental constraints on how much context they can process simultaneously. The context window represents the maximum amount of text the model can consider when generating responses. For the financial advisory agent, this constraint means carefully selecting which memories to include in each interaction, as the agent cannot simply load the entire history of its relationship with a client into every conversation.</p>
+
+    <p>Effective context window management requires prioritizing the most relevant information for the current interaction. When the client asks about portfolio rebalancing, the agent must select from potentially thousands of past interactions, documents, and knowledge items to populate its limited context window. The selection process balances several competing priorities including immediate conversational context, relevant historical interactions, applicable domain knowledge, and client-specific information.</p>
+
+    <p>The agent typically reserves a portion of the context window for immediate conversation, ensuring recent exchanges remain accessible for resolving references and maintaining coherence. Another portion loads relevant episodic memories based on semantic similarity to the current query, bringing in past interactions that might inform the current discussion. Domain knowledge occupies additional space, with the agent retrieving concepts and facts pertinent to the query. Client profile information rounds out the context, ensuring the agent considers the client's goals, constraints, and preferences.</p>
+
+    <div class="pattern-card">
+        <h4>Context Window Management Implementation</h4>
+        <div class="code-block">
+<span style="color: #FF6B6B;">class</span> <span style="color: #FFD93D;">ContextWindowManager</span> {
+    <span style="color: #FFD93D;">constructor</span>(maxTokens = <span style="color: #FFD93D;">8000</span>) {
+        <span style="color: #FF6B6B;">this</span>.maxTokens = maxTokens;
+        <span style="color: #FF6B6B;">this</span>.memorySystem = <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">TieredMemorySystem</span>();
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">buildContext</span>(query, userId, sessionId) {
+        <span style="color: #FF6B6B;">const</span> allocation = {
+            conversation: Math.<span style="color: #FFD93D;">floor</span>(<span style="color: #FF6B6B;">this</span>.maxTokens * <span style="color: #FFD93D;">0.3</span>),
+            episodic: Math.<span style="color: #FFD93D;">floor</span>(<span style="color: #FF6B6B;">this</span>.maxTokens * <span style="color: #FFD93D;">0.25</span>),
+            semantic: Math.<span style="color: #FFD93D;">floor</span>(<span style="color: #FF6B6B;">this</span>.maxTokens * <span style="color: #FFD93D;">0.25</span>),
+            profile: Math.<span style="color: #FFD93D;">floor</span>(<span style="color: #FF6B6B;">this</span>.maxTokens * <span style="color: #FFD93D;">0.2</span>)
+        };
+        
+        <span style="color: #FF6B6B;">const</span> context = { query: query, components: {} };
+        
+        <span style="color: #4CAF50;">// 1. Load conversational context</span>
+        <span style="color: #FF6B6B;">const</span> conversation = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.memorySystem.<span style="color: #FFD93D;">getRecentConversation</span>(
+            sessionId,
+            allocation.conversation
+        );
+        context.components.conversation = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">truncateToTokens</span>(
+            conversation,
+            allocation.conversation
+        );
+        
+        <span style="color: #4CAF50;">// 2. Retrieve relevant episodic memories</span>
+        <span style="color: #FF6B6B;">const</span> episodes = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.memorySystem.<span style="color: #FFD93D;">retrieveEpisodes</span>(
+            query,
+            userId,
+            { limit: <span style="color: #FFD93D;">5</span> }
+        );
+        context.components.episodic = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">truncateToTokens</span>(
+            <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">formatEpisodes</span>(episodes),
+            allocation.episodic
+        );
+        
+        <span style="color: #4CAF50;">// 3. Load relevant semantic knowledge</span>
+        <span style="color: #FF6B6B;">const</span> knowledge = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.memorySystem.<span style="color: #FFD93D;">retrieveKnowledge</span>(
+            query,
+            { limit: <span style="color: #FFD93D;">10</span> }
+        );
+        context.components.semantic = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">truncateToTokens</span>(
+            <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">formatKnowledge</span>(knowledge),
+            allocation.semantic
+        );
+        
+        <span style="color: #4CAF50;">// 4. Include client profile</span>
+        <span style="color: #FF6B6B;">const</span> profile = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.memorySystem.<span style="color: #FFD93D;">getClientProfile</span>(userId);
+        context.components.profile = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">truncateToTokens</span>(
+            <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">formatProfile</span>(profile),
+            allocation.profile
+        );
+        
+        <span style="color: #FF6B6B;">return</span> context;
+    }
+    
+    <span style="color: #FFD93D;">truncateToTokens</span>(content, maxTokens) {
+        <span style="color: #4CAF50;">// Intelligent truncation preserving key information</span>
+        <span style="color: #FF6B6B;">const</span> tokens = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">tokenize</span>(content);
+        
+        <span style="color: #FF6B6B;">if</span> (tokens.length <= maxTokens) {
+            <span style="color: #FF6B6B;">return</span> content;
+        }
+        
+        <span style="color: #4CAF50;">// Keep most recent and most relevant portions</span>
+        <span style="color: #FF6B6B;">const</span> recentPortion = Math.<span style="color: #FFD93D;">floor</span>(maxTokens * <span style="color: #FFD93D;">0.6</span>);
+        <span style="color: #FF6B6B;">const</span> relevantPortion = maxTokens - recentPortion;
+        
+        <span style="color: #FF6B6B;">const</span> recent = tokens.<span style="color: #FFD93D;">slice</span>(-recentPortion);
+        <span style="color: #FF6B6B;">const</span> relevant = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">extractMostRelevant</span>(
+            tokens.<span style="color: #FFD93D;">slice</span>(<span style="color: #FFD93D;">0</span>, -recentPortion),
+            relevantPortion
+        );
+        
+        <span style="color: #FF6B6B;">return</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">detokenize</span>([...relevant, <span style="color: #A8E6CF;">'...'</span>, ...recent]);
+    }
+}
+        </div>
+    </div>
+
+    <div class="implementation-section">
+        <h4>Memory System Integration</h4>
+        <p>Effective memory management integrates all these components into a cohesive system that supports intelligent agent behavior. The financial advisory agent maintains tiered memory from working memory through long-term storage, stores different memory types using appropriate mechanisms optimized for their access patterns, retrieves relevant memories efficiently using hybrid search strategies, and balances competing objectives of completeness, relevance, and performance.</p>
+        
+        <p>The integration ensures that memory serves reasoning and planning rather than overwhelming them. When the client asks about college funding, the agent accesses working memory for conversational context, retrieves episodic memories of past discussions about the daughter and education planning, loads semantic knowledge about 529 plans and other funding vehicles, incorporates the client's profile including goals and risk tolerance, and synthesizes all this information within context window constraints to provide informed, personalized advice.</p>
+    </div>
+
+    <div class="conclusion">
+        <h2>Building Agents That Remember</h2>
+        <p>Memory management represents a critical yet often underappreciated dimension of agent design. While reasoning and planning capabilities determine what agents can do with information, memory systems determine what information agents have available to reason about. The financial advisory agent's ability to provide personalized, context-aware advice over years of engagement depends fundamentally on sophisticated memory management that preserves relevant history while remaining computationally tractable.</p>
+        
+        <p>Short-term and long-term memory tiers enable agents to maintain both immediate conversational context and persistent knowledge spanning extended relationships. Different storage mechanisms optimized for conversational, episodic, and semantic memory ensure efficient access to different information types. Context window management allows agents to work within fundamental constraints while still accessing rich historical context.</p>
+        
+        <p>As agents tackle increasingly complex, long-horizon tasks requiring accumulated understanding of users, domains, and contexts, memory management will grow in importance. The difference between agents that provide genuinely valuable ongoing partnerships versus those that treat each interaction as isolated will largely come down to how effectively they manage memory. Building agents that remember well requires careful attention to storage mechanisms, retrieval strategies, and integration policies that work together to create context-aware intelligence.</p>
+    </div>
+
+    <div class="author-info">
+        <p><strong>About This Series:</strong> This article explores memory management mechanisms that enable agents to maintain context and knowledge across extended interactions. Building on agent architecture and reasoning capabilities discussed in previous articles, we examine how memory systems store, retrieve, and maintain information that shapes agent behavior. Future articles will explore multi-agent coordination patterns and human-in-the-loop system design.</p>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#001F54',
+                primaryTextColor: '#333333',
+                primaryBorderColor: '#002B5B',
+                lineColor: '#002B5B',
+                secondaryColor: '#e6f3ff',
+                tertiaryColor: '#ffe6e6'
+            }
+        });
+    </script>
+</body>
+</html>
