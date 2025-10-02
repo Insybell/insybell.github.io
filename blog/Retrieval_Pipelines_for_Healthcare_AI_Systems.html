@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieval Pipelines for Healthcare AI Systems</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body {
+            background-color: #FFFFFF;
+            color: #333333;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #001F54, #002B5B);
+            color: #FFFFFF;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 31, 84, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            color: #333333;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid #002B5B;
+            padding-left: 20px;
+            background: linear-gradient(90deg, rgba(0, 31, 84, 0.1), transparent);
+            padding: 15px 20px;
+        }
+        
+        h3 {
+            color: #333333;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.1), rgba(0, 43, 91, 0.05));
+            border: 2px solid #001F54;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 2px 10px rgba(0, 31, 84, 0.2);
+        }
+        
+        .code-block {
+            background-color: #001F54;
+            color: #FFFFFF;
+            border: 1px solid #002B5B;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        
+        .diagram-container {
+            background: #FFFFFF;
+            border: 2px solid #002B5B;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 31, 84, 0.1);
+        }
+        
+        .diagram-caption {
+            margin-top: 15px;
+            font-style: italic;
+            color: #002B5B;
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+        
+        .use-case-box {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.05), rgba(0, 43, 91, 0.1));
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 2px solid #001F54;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 31, 84, 0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #001F54, #002B5B);
+            color: #FFFFFF;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 31, 84, 0.1);
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(0, 31, 84, 0.05);
+        }
+        
+        .implementation-section {
+            background: rgba(0, 31, 84, 0.03);
+            padding: 25px;
+            border-left: 4px solid #001F54;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+        
+        .key-insight {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.15), rgba(0, 43, 91, 0.08));
+            border-left: 5px solid #001F54;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+        
+        .pattern-card {
+            background: #FFFFFF;
+            border: 2px solid #002B5B;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 31, 84, 0.15);
+        }
+        
+        .pattern-card h4 {
+            color: #001F54;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .conclusion {
+            background: #FFFFFF;
+            color: #333333;
+            padding: 30px;
+            border: 2px solid #001F54;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 31, 84, 0.3);
+        }
+
+        .author-info {
+            background: linear-gradient(135deg, rgba(0, 31, 84, 0.05), rgba(0, 43, 91, 0.1));
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #002B5B;
+        }
+
+        a {
+            color: #002B5B;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Retrieval Pipelines for Healthcare AI Systems</h1>
+        <div class="subtitle">RAG Architecture and Knowledge Integration</div>
+    </div>
+
+    <div class="use-case-box">
+        <h2>The Clinical Decision Support Challenge</h2>
+        <p>Consider a hospital deploying an AI-powered clinical decision support system to assist physicians in diagnosing complex cases. A cardiologist encounters a 58-year-old patient presenting with atypical chest pain, elevated troponin levels, and unusual ECG patterns that don't fit standard acute coronary syndrome presentations. The physician queries the system for similar cases, relevant research on atypical presentations, current treatment guidelines, and potential differential diagnoses.</p>
+        
+        <p>The system must search across diverse knowledge sources including electronic health records containing millions of historical patient cases, medical literature databases with decades of peer-reviewed research, clinical practice guidelines from multiple specialty organizations, drug interaction databases and pharmacological references, and institutional protocols specific to this hospital's procedures. Each source contains information structured differently, ranging from highly structured lab results and vital signs to unstructured clinical notes and research papers.</p>
+        
+        <p>Simply dumping all potentially relevant information into the AI would overwhelm its context window and dilute critical insights with noise. The system must retrieve precisely the most relevant information, present it in a form the AI can reason about effectively, balance between broad coverage and focused relevance, integrate information across structured and unstructured sources, and maintain clinical accuracy while operating under strict latency constraints. This retrieval pipeline challenge sits at the heart of effective healthcare AI systems.</p>
+    </div>
+
+    <h2>Designing RAG Architecture for Healthcare</h2>
+
+    <h3>The RAG Framework Components</h3>
+
+    <p>Retrieval-Augmented Generation fundamentally transforms how AI systems access and utilize knowledge. Rather than encoding all knowledge within model parameters, RAG systems dynamically retrieve relevant information from external knowledge bases and augment the AI's context with this retrieved content. For healthcare applications, this architecture proves essential because medical knowledge evolves constantly, domain expertise requires access to vast specialized literature, patient data must remain separate from model parameters for privacy, and clinical accuracy demands grounding in authoritative sources rather than potentially hallucinated information.</p>
+
+    <p>The healthcare RAG system comprises several interconnected components. The document ingestion pipeline processes diverse medical documents, extracting text, preserving critical metadata, and preparing content for indexing. The chunking system segments documents into retrievable units while maintaining semantic coherence and clinical context. The embedding pipeline generates vector representations capturing medical semantic meaning. The retrieval system searches these embeddings to identify relevant content for specific queries. The reranking component refines initial retrieval results using additional relevance signals. Finally, the generation component synthesizes retrieved information into coherent clinical insights.</p>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        graph TB
+            A[Clinical Query] --> B[Query Processing]
+            
+            B --> C[Retrieval System]
+            
+            C --> D[Vector Search]
+            C --> E[Keyword Search]
+            C --> F[Structured Query]
+            
+            D --> G[Candidate Documents]
+            E --> G
+            F --> G
+            
+            G --> H[Reranking]
+            
+            I[Knowledge Base] --> J[Medical Literature]
+            I --> K[Clinical Guidelines]
+            I --> L[Patient Records]
+            I --> M[Drug Database]
+            
+            J --> C
+            K --> C
+            L --> C
+            M --> C
+            
+            H --> N[Top K Results]
+            N --> O[Context Augmentation]
+            
+            O --> P[Clinical AI Model]
+            P --> Q[Generated Response]
+            
+            style A fill:#001F54,color:#FFFFFF
+            style I fill:#001F54,color:#FFFFFF
+            style Q fill:#e6ffe6
+        </div>
+        <div class="diagram-caption">Figure 1: RAG Architecture for Clinical Decision Support</div>
+    </div>
+
+    <h3>Document Processing and Ingestion</h3>
+
+    <p>Healthcare documents present unique processing challenges due to their diversity of formats, complex structure, and critical importance of preserving clinical context. Medical literature arrives as PDFs with figures, tables, and specialized formatting. Clinical guidelines contain hierarchical recommendations with evidence levels. Electronic health records mix structured data fields with unstructured clinical narratives. Each document type requires specialized processing to extract content while maintaining the relationships and context essential for clinical reasoning.</p>
+
+    <p>The document ingestion pipeline begins by identifying document type and applying appropriate extraction logic. Research papers require parsing that preserves abstract-methods-results-discussion structure, extracts key findings and conclusions, maintains references to figures and tables, and captures study metadata like publication date and journal. Clinical guidelines need processing that preserves recommendation hierarchy and strength, links recommendations to supporting evidence, maintains version and update information, and identifies applicable patient populations.</p>
+
+    <p>Electronic health records demand particularly careful processing that separates structured data like lab results and vital signs from unstructured clinical notes, preserves temporal relationships between events, maintains patient privacy through deidentification, and links diagnoses, treatments, and outcomes. Throughout this processing, the system must maintain provenance tracking so retrieved information can be traced back to specific sources, enabling clinicians to verify claims and assess information quality.</p>
+
+    <div class="pattern-card">
+        <h4>Document Ingestion Pipeline Implementation</h4>
+        <div class="code-block">
+<span style="color: #FF6B6B;">class</span> <span style="color: #FFD93D;">MedicalDocumentIngestion</span> {
+    <span style="color: #FFD93D;">constructor</span>() {
+        <span style="color: #FF6B6B;">this</span>.processors = {
+            research_paper: <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">ResearchPaperProcessor</span>(),
+            clinical_guideline: <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">GuidelineProcessor</span>(),
+            ehr_note: <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">EHRNoteProcessor</span>(),
+            drug_reference: <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">DrugReferenceProcessor</span>()
+        };
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">ingestDocument</span>(document, documentType) {
+        <span style="color: #4CAF50;">// Select appropriate processor</span>
+        <span style="color: #FF6B6B;">const</span> processor = <span style="color: #FF6B6B;">this</span>.processors[documentType];
+        
+        <span style="color: #4CAF50;">// Extract and structure content</span>
+        <span style="color: #FF6B6B;">const</span> extracted = <span style="color: #FF6B6B;">await</span> processor.<span style="color: #FFD93D;">extract</span>(document);
+        
+        <span style="color: #4CAF50;">// Preserve metadata and provenance</span>
+        <span style="color: #FF6B6B;">const</span> metadata = {
+            documentId: document.id,
+            documentType: documentType,
+            sourceSystem: document.source,
+            processedDate: <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">Date</span>(),
+            version: document.version,
+            ...extracted.metadata
+        };
+        
+        <span style="color: #4CAF50;">// Apply document-specific processing</span>
+        <span style="color: #FF6B6B;">let</span> processedContent;
+        
+        <span style="color: #FF6B6B;">if</span> (documentType === <span style="color: #A8E6CF;">'research_paper'</span>) {
+            processedContent = {
+                abstract: extracted.abstract,
+                sections: extracted.sections,
+                findings: extracted.keyFindings,
+                methodology: extracted.methodology,
+                conclusions: extracted.conclusions,
+                citations: extracted.references
+            };
+        } <span style="color: #FF6B6B;">else if</span> (documentType === <span style="color: #A8E6CF;">'clinical_guideline'</span>) {
+            processedContent = {
+                recommendations: extracted.recommendations,
+                evidenceLevel: extracted.evidenceGrades,
+                applicability: extracted.patientPopulation,
+                updates: extracted.revisionHistory
+            };
+        } <span style="color: #FF6B6B;">else if</span> (documentType === <span style="color: #A8E6CF;">'ehr_note'</span>) {
+            <span style="color: #4CAF50;">// Apply deidentification</span>
+            <span style="color: #FF6B6B;">const</span> deidentified = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">deidentify</span>(extracted.content);
+            
+            processedContent = {
+                clinicalNarrative: deidentified.text,
+                structuredData: extracted.structuredData,
+                diagnoses: extracted.diagnoses,
+                treatments: extracted.treatments,
+                temporalEvents: extracted.timeline
+            };
+        }
+        
+        <span style="color: #FF6B6B;">return</span> {
+            content: processedContent,
+            metadata: metadata,
+            raw: extracted.rawText
+        };
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">deidentify</span>(content) {
+        <span style="color: #4CAF50;">// Remove or mask PHI (Protected Health Information)</span>
+        <span style="color: #FF6B6B;">const</span> phiPatterns = {
+            names: <span style="color: #A8E6CF;">/\b[A-Z][a-z]+ [A-Z][a-z]+\b/g</span>,
+            dates: <span style="color: #A8E6CF;">/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g</span>,
+            mrn: <span style="color: #A8E6CF;">/\bMRN:?\s*\d+\b/gi</span>,
+            ssn: <span style="color: #A8E6CF;">/\b\d{3}-\d{2}-\d{4}\b/g</span>
+        };
+        
+        <span style="color: #FF6B6B;">let</span> deidentified = content;
+        
+        <span style="color: #FF6B6B;">for</span> (<span style="color: #FF6B6B;">const</span> [type, pattern] <span style="color: #FF6B6B;">of</span> Object.<span style="color: #FFD93D;">entries</span>(phiPatterns)) {
+            deidentified = deidentified.<span style="color: #FFD93D;">replace</span>(
+                pattern, 
+                <span style="color: #A8E6CF;">`[${type.toUpperCase()}]`</span>
+            );
+        }
+        
+        <span style="color: #FF6B6B;">return</span> { text: deidentified };
+    }
+}
+        </div>
+    </div>
+
+    <h2>Chunking Strategies for Medical Documents</h2>
+
+    <h3>The Chunking Trade-off Space</h3>
+
+    <p>Chunking segments long documents into smaller units suitable for retrieval and fitting within AI context windows. This segmentation involves fundamental trade-offs between chunk size, semantic coherence, and retrieval precision. Large chunks preserve more context but may contain irrelevant information that dilutes relevance scores and wastes context window space. Small chunks enable precise retrieval but risk losing critical context that spans chunk boundaries, potentially fragmenting clinical reasoning chains.</p>
+
+    <p>For medical documents, these trade-offs carry clinical significance. A research paper discussing a novel diabetes treatment might have abstract, methods, results, and discussion sections that collectively form a coherent argument. Chunking too small might retrieve individual findings without the methodological context needed to assess their validity. Chunking too large might retrieve entire papers when only specific sections are relevant, overwhelming the context with tangential content.</p>
+
+    <p>The optimal chunking strategy depends on document type and retrieval use case. Clinical guidelines with hierarchical recommendations benefit from chunk boundaries aligned to recommendation units, ensuring each retrieved chunk contains a complete recommendation with its evidence level and applicability criteria. Research abstracts often work well as single chunks since they provide self-contained summaries. Lengthy clinical notes might chunk by encounter sections like history of present illness, physical examination, and assessment and plan, preserving clinical workflow structure.</p>
+
+    <div class="key-insight">
+        Effective chunking for healthcare documents requires understanding both the semantic structure of medical content and the clinical reasoning patterns that will consume retrieved information. Generic fixed-size chunking ignores domain structure and risks fragmenting clinically coherent units.
+    </div>
+
+    <h3>Semantic Boundary Detection</h3>
+
+    <p>Rather than chunking at arbitrary character counts, semantic boundary detection identifies natural breakpoints in document structure where meaning units complete. For research papers, section headings provide clear semantic boundaries. For clinical notes, encounter section markers indicate topic transitions. For clinical guidelines, recommendation numbering creates natural chunk boundaries. Detecting these semantic boundaries requires domain-aware parsing that recognizes medical document conventions.</p>
+
+    <p>The healthcare system implements a multi-strategy chunking pipeline that first attempts to identify semantic boundaries through document structure markers like section headings, numbered items, and topic transitions. When documents lack explicit structure markers, the system uses semantic similarity analysis to detect topic shifts, identifying where consecutive paragraphs discuss substantially different medical concepts as potential chunk boundaries. This hybrid approach balances the precision of structure-based chunking with the flexibility of semantic analysis for less structured content.</p>
+
+    <div class="pattern-card">
+        <h4>Semantic Chunking Implementation</h4>
+        <div class="code-block">
+<span style="color: #FF6B6B;">class</span> <span style="color: #FFD93D;">SemanticChunker</span> {
+    <span style="color: #FFD93D;">constructor</span>(embeddingModel) {
+        <span style="color: #FF6B6B;">this</span>.embedModel = embeddingModel;
+        <span style="color: #FF6B6B;">this</span>.minChunkSize = <span style="color: #FFD93D;">200</span>;
+        <span style="color: #FF6B6B;">this</span>.maxChunkSize = <span style="color: #FFD93D;">1000</span>;
+        <span style="color: #FF6B6B;">this</span>.semanticThreshold = <span style="color: #FFD93D;">0.7</span>;
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">chunkDocument</span>(document, documentType) {
+        <span style="color: #4CAF50;">// Try structure-based chunking first</span>
+        <span style="color: #FF6B6B;">const</span> structuredChunks = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">tryStructureBasedChunking</span>(
+            document, 
+            documentType
+        );
+        
+        <span style="color: #FF6B6B;">if</span> (structuredChunks) {
+            <span style="color: #FF6B6B;">return</span> structuredChunks;
+        }
+        
+        <span style="color: #4CAF50;">// Fall back to semantic similarity chunking</span>
+        <span style="color: #FF6B6B;">return await</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">semanticSimilarityChunking</span>(document);
+    }
+    
+    <span style="color: #FFD93D;">tryStructureBasedChunking</span>(document, documentType) {
+        <span style="color: #FF6B6B;">if</span> (documentType === <span style="color: #A8E6CF;">'research_paper'</span>) {
+            <span style="color: #4CAF50;">// Chunk by major sections</span>
+            <span style="color: #FF6B6B;">return</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">chunkBySections</span>(document, [
+                <span style="color: #A8E6CF;">'Abstract'</span>,
+                <span style="color: #A8E6CF;">'Introduction'</span>,
+                <span style="color: #A8E6CF;">'Methods'</span>,
+                <span style="color: #A8E6CF;">'Results'</span>,
+                <span style="color: #A8E6CF;">'Discussion'</span>,
+                <span style="color: #A8E6CF;">'Conclusion'</span>
+            ]);
+        } <span style="color: #FF6B6B;">else if</span> (documentType === <span style="color: #A8E6CF;">'clinical_guideline'</span>) {
+            <span style="color: #4CAF50;">// Chunk by recommendation units</span>
+            <span style="color: #FF6B6B;">return</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">chunkByRecommendations</span>(document);
+        } <span style="color: #FF6B6B;">else if</span> (documentType === <span style="color: #A8E6CF;">'ehr_note'</span>) {
+            <span style="color: #4CAF50;">// Chunk by clinical note sections</span>
+            <span style="color: #FF6B6B;">return</span> <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">chunkBySections</span>(document, [
+                <span style="color: #A8E6CF;">'Chief Complaint'</span>,
+                <span style="color: #A8E6CF;">'History of Present Illness'</span>,
+                <span style="color: #A8E6CF;">'Review of Systems'</span>,
+                <span style="color: #A8E6CF;">'Physical Examination'</span>,
+                <span style="color: #A8E6CF;">'Assessment and Plan'</span>
+            ]);
+        }
+        
+        <span style="color: #FF6B6B;">return null</span>;
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">semanticSimilarityChunking</span>(document) {
+        <span style="color: #4CAF50;">// Split into sentences</span>
+        <span style="color: #FF6B6B;">const</span> sentences = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">splitIntoSentences</span>(document.content);
+        
+        <span style="color: #4CAF50;">// Generate embeddings for each sentence</span>
+        <span style="color: #FF6B6B;">const</span> embeddings = <span style="color: #FF6B6B;">await</span> Promise.<span style="color: #FFD93D;">all</span>(
+            sentences.<span style="color: #FFD93D;">map</span>(<span style="color: #FF6B6B;">s</span> => <span style="color: #FF6B6B;">this</span>.embedModel.<span style="color: #FFD93D;">embed</span>(s))
+        );
+        
+        <span style="color: #FF6B6B;">const</span> chunks = [];
+        <span style="color: #FF6B6B;">let</span> currentChunk = [sentences[<span style="color: #FFD93D;">0</span>]];
+        
+        <span style="color: #FF6B6B;">for</span> (<span style="color: #FF6B6B;">let</span> i = <span style="color: #FFD93D;">1</span>; i < sentences.length; i++) {
+            <span style="color: #4CAF50;">// Calculate similarity between consecutive sentences</span>
+            <span style="color: #FF6B6B;">const</span> similarity = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">cosineSimilarity</span>(
+                embeddings[i - <span style="color: #FFD93D;">1</span>],
+                embeddings[i]
+            );
+            
+            <span style="color: #FF6B6B;">const</span> chunkSize = currentChunk.<span style="color: #FFD93D;">join</span>(<span style="color: #A8E6CF;">' '</span>).length;
+            
+            <span style="color: #4CAF50;">// Start new chunk if similarity drops or size limit reached</span>
+            <span style="color: #FF6B6B;">if</span> (similarity < <span style="color: #FF6B6B;">this</span>.semanticThreshold && 
+                chunkSize >= <span style="color: #FF6B6B;">this</span>.minChunkSize) {
+                chunks.<span style="color: #FFD93D;">push</span>({
+                    content: currentChunk.<span style="color: #FFD93D;">join</span>(<span style="color: #A8E6CF;">' '</span>),
+                    startIndex: i - currentChunk.length,
+                    endIndex: i - <span style="color: #FFD93D;">1</span>
+                });
+                currentChunk = [sentences[i]];
+            } <span style="color: #FF6B6B;">else if</span> (chunkSize >= <span style="color: #FF6B6B;">this</span>.maxChunkSize) {
+                chunks.<span style="color: #FFD93D;">push</span>({
+                    content: currentChunk.<span style="color: #FFD93D;">join</span>(<span style="color: #A8E6CF;">' '</span>),
+                    startIndex: i - currentChunk.length,
+                    endIndex: i - <span style="color: #FFD93D;">1</span>
+                });
+                currentChunk = [sentences[i]];
+            } <span style="color: #FF6B6B;">else</span> {
+                currentChunk.<span style="color: #FFD93D;">push</span>(sentences[i]);
+            }
+        }
+        
+        <span style="color: #4CAF50;">// Add final chunk</span>
+        <span style="color: #FF6B6B;">if</span> (currentChunk.length > <span style="color: #FFD93D;">0</span>) {
+            chunks.<span style="color: #FFD93D;">push</span>({
+                content: currentChunk.<span style="color: #FFD93D;">join</span>(<span style="color: #A8E6CF;">' '</span>),
+                startIndex: sentences.length - currentChunk.length,
+                endIndex: sentences.length - <span style="color: #FFD93D;">1</span>
+            });
+        }
+        
+        <span style="color: #FF6B6B;">return</span> chunks;
+    }
+}
+        </div>
+    </div>
+
+    <h3>Chunk Overlap and Context Preservation</h3>
+
+    <p>Even with semantic boundary detection, important context sometimes spans chunk boundaries. A clinical finding in one paragraph might reference a patient history detail mentioned earlier, or a research result might depend on methodological details from a previous section. Chunk overlap addresses this by including some content from adjacent chunks, ensuring boundary-spanning context remains accessible.</p>
+
+    <p>The healthcare system implements a sliding window approach where chunks overlap by a configurable amount, typically between 10 and 20 percent of chunk size. When retrieving information about diabetes management from a clinical guideline, overlapping chunks ensure that if one chunk contains a recommendation and the next chunk contains important caveats or contraindications, both pieces of information can be retrieved together or the context is preserved across adjacent chunks.</p>
+
+    <p>Overlap must balance context preservation against redundancy and storage costs. Excessive overlap means the same content appears in multiple chunks, increasing storage requirements and potentially causing the same information to be retrieved multiple times and consume extra context window space. The system monitors retrieval patterns to identify cases where inadequate overlap causes context loss, adjusting overlap parameters for specific document types based on observed retrieval quality.</p>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Chunking Strategy</th>
+                <th>Best For</th>
+                <th>Advantages</th>
+                <th>Considerations</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Fixed Size</strong></td>
+                <td>Homogeneous content without clear structure</td>
+                <td>Simple implementation, predictable chunk sizes</td>
+                <td>May fragment semantic units, ignores content structure</td>
+            </tr>
+            <tr>
+                <td><strong>Semantic Boundaries</strong></td>
+                <td>Structured medical documents with clear sections</td>
+                <td>Preserves coherent units, respects document structure</td>
+                <td>Variable chunk sizes, requires structure detection</td>
+            </tr>
+            <tr>
+                <td><strong>Hybrid with Overlap</strong></td>
+                <td>Complex clinical content spanning boundaries</td>
+                <td>Balances coherence and context preservation</td>
+                <td>Increased storage, potential redundancy in retrieval</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Hybrid Search: Combining Semantic and Keyword Retrieval</h2>
+
+    <h3>The Complementary Nature of Search Approaches</h3>
+
+    <p>Pure vector search using semantic embeddings excels at finding conceptually similar content even when exact terminology differs. When a physician queries about "myocardial infarction," vector search successfully retrieves documents discussing "heart attack" or "acute coronary syndrome" because the embeddings capture semantic relationships. However, vector search can miss exact medical terminology matches and struggles with rare technical terms, medication names, or specific numerical values that lack rich semantic context in the embedding space.</p>
+
+    <p>Keyword search using traditional inverted indices excels at exact matching and handles rare terms, medication names, and specific identifiers reliably. When searching for "metoprolol 50mg," keyword search precisely finds documents containing this exact dosage. However, keyword search misses semantically similar content with different wording and cannot understand synonyms or related concepts without extensive manual configuration of term expansions.</p>
+
+    <p>Hybrid search combines these approaches, leveraging the semantic understanding of vector search and the precision of keyword matching. The healthcare retrieval system runs both search methods in parallel, retrieves candidates from each approach, and merges results using a ranking algorithm that considers both semantic similarity scores and keyword match quality. This combination ensures that queries about "acute MI" retrieve documents mentioning "myocardial infarction," "heart attack," or "STEMI" while also ensuring exact matches for specific drug names and dosages rank appropriately.</p>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+        graph TB
+            A[Clinical Query: chest pain troponin elevated] --> B[Query Processing]
+            
+            B --> C[Vector Search Path]
+            B --> D[Keyword Search Path]
+            
+            C --> C1[Generate Query Embedding]
+            C1 --> C2[Vector Similarity Search]
+            C2 --> C3[Top 50 by Semantic Score]
+            
+            D --> D1[Extract Keywords]
+            D1 --> D2[BM25 Search]
+            D2 --> D3[Top 50 by Keyword Score]
+            
+            C3 --> E[Reciprocal Rank Fusion]
+            D3 --> E
+            
+            E --> F[Merged Results]
+            F --> G[Reranking Model]
+            G --> H[Final Top K Results]
+            
+            style A fill:#001F54,color:#FFFFFF
+            style E fill:#ffe6e6
+            style H fill:#e6ffe6
+        </div>
+        <div class="diagram-caption">Figure 2: Hybrid Search Pipeline Architecture</div>
+    </div>
+
+    <div class="pattern-card">
+        <h4>Hybrid Search Implementation</h4>
+        <div class="code-block">
+<span style="color: #FF6B6B;">class</span> <span style="color: #FFD93D;">HybridSearchSystem</span> {
+    <span style="color: #FFD93D;">constructor</span>(vectorStore, keywordIndex, reranker) {
+        <span style="color: #FF6B6B;">this</span>.vectorStore = vectorStore;
+        <span style="color: #FF6B6B;">this</span>.keywordIndex = keywordIndex;
+        <span style="color: #FF6B6B;">this</span>.reranker = reranker;
+        <span style="color: #FF6B6B;">this</span>.vectorWeight = <span style="color: #FFD93D;">0.6</span>;
+        <span style="color: #FF6B6B;">this</span>.keywordWeight = <span style="color: #FFD93D;">0.4</span>;
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">search</span>(query, options = {}) {
+        <span style="color: #4CAF50;">// Parallel search execution</span>
+        <span style="color: #FF6B6B;">const</span> [vectorResults, keywordResults] = <span style="color: #FF6B6B;">await</span> Promise.<span style="color: #FFD93D;">all</span>([
+            <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">vectorSearch</span>(query, options.topK || <span style="color: #FFD93D;">50</span>),
+            <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">keywordSearch</span>(query, options.topK || <span style="color: #FFD93D;">50</span>)
+        ]);
+        
+        <span style="color: #4CAF50;">// Merge results using Reciprocal Rank Fusion</span>
+        <span style="color: #FF6B6B;">const</span> mergedResults = <span style="color: #FF6B6B;">this</span>.<span style="color: #FFD93D;">reciprocalRankFusion</span>(
+            vectorResults,
+            keywordResults
+        );
+        
+        <span style="color: #4CAF50;">// Apply reranking for final precision</span>
+        <span style="color: #FF6B6B;">const</span> reranked = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.reranker.<span style="color: #FFD93D;">rerank</span>(
+            query,
+            mergedResults,
+            options.finalK || <span style="color: #FFD93D;">10</span>
+        );
+        
+        <span style="color: #FF6B6B;">return</span> reranked;
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">vectorSearch</span>(query, k) {
+        <span style="color: #4CAF50;">// Generate query embedding</span>
+        <span style="color: #FF6B6B;">const</span> queryEmbedding = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.vectorStore.<span style="color: #FFD93D;">embed</span>(query);
+        
+        <span style="color: #4CAF50;">// Semantic similarity search</span>
+        <span style="color: #FF6B6B;">const</span> results = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.vectorStore.<span style="color: #FFD93D;">search</span>(queryEmbedding, {
+            topK: k,
+            threshold: <span style="color: #FFD93D;">0.6</span>
+        });
+        
+        <span style="color: #FF6B6B;">return</span> results.<span style="color: #FFD93D;">map</span>((<span style="color: #FF6B6B;">r</span>, <span style="color: #FF6B6B;">idx</span>) => ({
+            chunkId: r.id,
+            content: r.content,
+            metadata: r.metadata,
+            vectorScore: r.score,
+            vectorRank: idx + <span style="color: #FFD93D;">1</span>
+        }));
+    }
+    
+    <span style="color: #FF6B6B;">async</span> <span style="color: #FFD93D;">keywordSearch</span>(query, k) {
+        <span style="color: #4CAF50;">// BM25 keyword search</span>
+        <span style="color: #FF6B6B;">const</span> results = <span style="color: #FF6B6B;">await</span> <span style="color: #FF6B6B;">this</span>.keywordIndex.<span style="color: #FFD93D;">search</span>(query, {
+            algorithm: <span style="color: #A8E6CF;">'bm25'</span>,
+            topK: k
+        });
+        
+        <span style="color: #FF6B6B;">return</span> results.<span style="color: #FFD93D;">map</span>((<span style="color: #FF6B6B;">r</span>, <span style="color: #FF6B6B;">idx</span>) => ({
+            chunkId: r.id,
+            content: r.content,
+            metadata: r.metadata,
+            keywordScore: r.score,
+            keywordRank: idx + <span style="color: #FFD93D;">1</span>
+        }));
+    }
+    
+    <span style="color: #FFD93D;">reciprocalRankFusion</span>(vectorResults, keywordResults, k = <span style="color: #FFD93D;">60</span>) {
+        <span style="color: #FF6B6B;">const</span> scores = <span style="color: #FF6B6B;">new</span> <span style="color: #FFD93D;">Map</span>();
+        
+        <span style="color: #4CAF50;">// Calculate RRF score from vector results</span>
+        <span style="color: #FF6B6B;">for</span> (<span style="color: #FF6B6B;">const</span> result <span style="color: #FF6B6B;">of</span> vectorResults) {
+            <span style="color: #FF6B6B;">const</span> rrfScore = <span style="color: #FFD93D;">1</span> / (k + result.vectorRank);
+            scores.<span style="color: #FFD93D;">set</span>(result.chunkId, {
+                ...result,
+                rrfScore: rrfScore * <span style="color: #FF6B6B;">this</span>.vectorWeight
+            });
+        }
+        
+        <span style="color: #4CAF50;">// Add RRF score from keyword results</span>
+        <span style="color: #FF6B6B;">for</span> (<span style="color: #FF6B6B;">const</span> result <span style="color: #FF6B6B;">of</span> keywordResults) {
+            <span style="color: #FF6B6B;">const</span> rrfScore = <span style="color: #FFD93D;">1</span> / (k + result.keywordRank);
+            
+            <span style="color: #FF6B6B;">if</span> (scores.<span style="color: #FFD93D;">has</span>(result.chunkId)) {
+                <span style="color: #FF6B6B;">const</span> existing = scores.<span style="color: #FFD93D;">get</span>(result.chunkId);
+                existing.rrfScore += rrfScore * <span style="color: #FF6B6B;">this</span>.keywordWeight;
+                existing.keywordScore = result.keywordScore;
+                existing.keywordRank = result.keywordRank;
+            } <span style="color: #FF6B6B;">else</span> {
+                scores.<span style="color: #FFD93D;">set</span>(result.chunkId, {
+                    ...result,
+                    rrfScore: rrfScore * <span style="color: #FF6B6B;">this</span>.keywordWeight
+                });
+            }
+        }
+        
+        <span style="color: #4CAF50;">// Sort by combined RRF score</span>
+        <span style="color: #FF6B6B;">return</span> Array.<span style="color: #FFD93D;">from</span>(scores.<span style="color: #FFD93D;">values</span>())
+            .<span style="color: #FFD93D;">sort</span>((<span style="color: #FF6B6B;">a</span>, <span style="color: #FF6B6B;">b</span>) => b.rrfScore - a.rrfScore);
+    }
+}
+        </div>
+    </div>
+
+    <h3>When to Use Pure Vector vs Hybrid Search</h3>
+
+    <p>The choice between pure vector search and hybrid search depends on query characteristics and domain requirements. Pure vector search works well when queries use natural language and conversational phrasing, when semantic understanding matters more than exact terminology, when documents use varied terminology for the same concepts, and when the embedding model has been trained on relevant medical domain data. A query like "What causes chest discomfort in middle-aged patients?" benefits from vector search's semantic understanding to connect "chest discomfort" with "angina," "myocardial ischemia," and related concepts.</p>
+
+    <p>Hybrid search becomes essential when queries contain specific medical terminology or drug names that must match exactly, when numerical values or dosages appear in queries, when acronyms or abbreviations are used that may not be well-represented in embeddings, and when precision matters more than recall. A query for "metoprolol tartrate 25mg twice daily" requires exact keyword matching to distinguish this dosage from other metoprolol formulations and dosing regimens.</p>
+
+    <p>The healthcare system implements query analysis that examines each query to determine the optimal search strategy. It identifies medical terminology and drug names that require exact matching, detects numerical values and measurements, and routes queries dynamically to pure vector search, pure keyword search, or hybrid search based on query characteristics. This adaptive routing ensures each query uses the search approach most likely to return relevant, accurate results.</p>
+
+    <h3>Reranking for Clinical Relevance</h3>
+
+    <p>Initial retrieval from vector and keyword search produces a candidate set ranked by similarity scores, but these scores don't necessarily reflect clinical relevance. A document might be semantically similar to the query but discuss a different patient population, treatment context, or evidence level. Reranking applies additional relevance signals to refine the initial ranking and surface the most clinically appropriate results.</p>
+
+    <p>The healthcare reranking system considers multiple signals beyond initial retrieval scores including query-document relevance using cross-encoder models that deeply compare query and document, clinical context alignment checking if patient characteristics and clinical scenarios match, evidence level and publication recency for research literature, institutional relevance preferring hospital-specific protocols over general guidelines, and user feedback incorporating clinical usage patterns and explicit relevance judgments. These signals combine through a learned ranking model that predicts clinical utility for specific queries and user contexts.</p>
+
+    <div class="implementation-section">
+        <h4>Building Effective Retrieval Pipelines</h4>
+        <p>Effective healthcare retrieval pipelines integrate document processing, semantic chunking, hybrid search, and reranking into systems that deliver clinically relevant information under strict latency and accuracy requirements. The clinical decision support system demonstrates how these components work together to support physician decision-making.</p>
+        
+        <p>When a physician queries about atypical chest pain presentations, the system processes diverse medical documents preserving clinical structure, chunks content at semantic boundaries maintaining diagnostic reasoning coherence, searches using hybrid approaches combining semantic understanding with terminological precision, and reranks results considering clinical context and evidence quality. The final retrieved information provides focused, relevant support for clinical decision-making without overwhelming the physician with tangential content.</p>
+        
+        <p>Continuous monitoring and improvement prove essential. The system tracks retrieval quality metrics, analyzes failed queries where relevant information exists but wasn't retrieved, monitors latency to ensure real-time responsiveness, and incorporates clinical feedback to refine chunking, search, and ranking strategies. This iterative improvement ensures the retrieval pipeline evolves to meet clinical needs effectively.</p>
+    </div>
+
+    <div class="conclusion">
+        <h2>Architecting Knowledge Integration</h2>
+        <p>Retrieval pipelines form the foundation of knowledge integration for AI systems operating in specialized domains like healthcare. The ability to retrieve precisely the right information from vast knowledge bases, present it in forms that support reasoning, and do so with clinical accuracy and appropriate latency directly determines whether AI systems deliver genuine value or remain limited to narrow applications.</p>
+        
+        <p>RAG architecture provides the framework, separating knowledge storage from model parameters and enabling dynamic access to current information while maintaining clinical accuracy through grounding in authoritative sources. Document processing and chunking strategies preserve medical semantic structure while creating retrievable units that fit within context windows. Hybrid search combines semantic understanding with terminological precision, ensuring queries retrieve both conceptually similar content and exact term matches when needed. Reranking refines results using clinical relevance signals beyond initial similarity scores.</p>
+        
+        <p>The healthcare domain exemplifies retrieval pipeline challenges present across specialized domains requiring access to vast technical knowledge, precise terminology matching, domain-specific semantic understanding, and integration across diverse structured and unstructured sources. The architectural patterns, chunking strategies, and hybrid search approaches developed for healthcare applications generalize to other knowledge-intensive domains from legal research to scientific literature analysis.</p>
+        
+        <p>As AI systems tackle increasingly complex knowledge integration challenges, retrieval pipeline sophistication will grow in importance. The difference between AI that provides genuinely useful knowledge access versus systems that overwhelm users with irrelevant information or miss critical content will come down to how effectively retrieval pipelines process, index, search, and rank domain-specific knowledge.</p>
+    </div>
+
+    <div class="author-info">
+        <p><strong>About This Series:</strong> This article begins our exploration of Knowledge Integration and Agent Development, focusing on retrieval pipelines that enable AI systems to access and utilize vast specialized knowledge bases effectively. Using healthcare as our domain throughout this series, we examine how agents acquire, process, and apply knowledge. Future articles will explore data handling, prompt engineering, and building reliable multimodal agents.</p>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#001F54',
+                primaryTextColor: '#333333',
+                primaryBorderColor: '#002B5B',
+                lineColor: '#002B5B',
+                secondaryColor: '#e6f3ff',
+                tertiaryColor: '#ffe6e6'
+            }
+        });
+    </script>
+</body>
+</html>
